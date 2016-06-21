@@ -17,5 +17,8 @@ export default {
     'grommet/scss': path.resolve(__dirname, '../grommet/src/scss'),
     'grommet': path.resolve(__dirname, '../grommet/src/js')
   },
-  devPreprocess: ['set-webpack-alias']
+  devPreprocess: ['set-webpack-alias'],
+  devServerProxy: {
+    '/api/task/*': 'http://localhost:8000'
+  }
 };

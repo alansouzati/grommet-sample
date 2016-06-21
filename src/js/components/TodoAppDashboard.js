@@ -9,7 +9,8 @@ import Table from 'grommet/components/Table';
 import Section from 'grommet/components/Section';
 import Status from 'grommet/components/icons/Status';
 
-import TodoAddTaskForm from './TodoAddTaskForm';
+import { browserHistory } from 'react-router';
+import { getTasks } from '../store';
 
 function getLabel(label, count, colorIndex) {
   return {
@@ -24,26 +25,18 @@ export default class TodoAppDashboard extends Component {
   constructor () {
     super();
     this._onRequestForAddTask = this._onRequestForAddTask.bind(this);
-    this._onAddTaskCancel = this._onAddTaskCancel.bind(this);
-    this._onAddTaskConfirm = this._onAddTaskConfirm.bind(this);
     this.state = {
-      tasks: [],
-      addTask: false
+      tasks: []
     };
   }
 
-  _onRequestForAddTask () {
-    this.setState({ addTask: true });
+  componentDidMount () {
+    getTasks().then((tasks) => this.setState({ tasks: tasks }));
   }
 
-  _onAddTaskCancel () {
-    this.setState({ addTask: false });
-  }
-
-  _onAddTaskConfirm (task) {
-    const tasks = this.state.tasks;
-    tasks.push(task);
-    this.setState({ addTask: false, tasks: tasks });
+  _onRequestForAddTask (event) {
+    event.preventDefault();
+    browserHistory.push('/add');
   }
 
   render () {
@@ -65,14 +58,6 @@ export default class TodoAppDashboard extends Component {
       );
     });
 
-    let addTaskLayer;
-    if (this.state.addTask) {
-      addTaskLayer = (
-        <TodoAddTaskForm onClose={this._onAddTaskCancel}
-          onSubmit={this._onAddTaskConfirm} />
-      );
-    }
-
     return (
       <Section primary={true}>
         <Tiles fill={true} flush={false}>
@@ -91,12 +76,11 @@ export default class TodoAppDashboard extends Component {
               </tbody>
             </Table>
             <Footer pad={{horizontal: 'small'}}>
-              <Button primary={true} label="Add Task"
+              <Button href='/add' primary={true} label="Add Task"
                 onClick={this._onRequestForAddTask} />
             </Footer>
           </Tile>
         </Tiles>
-        {addTaskLayer}
       </Section>
     );
   }
