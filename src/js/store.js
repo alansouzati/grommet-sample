@@ -12,6 +12,18 @@ export function addTask (task) {
   });
 }
 
+export function deleteTask (task) {
+  return new Promise((resolve, reject) => {
+    Rest.del('/api/task/', task).end((error) => {
+      if (error) {
+        reject('An unexpected issue happened, please try again...');
+      } else {
+        resolve();
+      }
+    });
+  });
+}
+
 export function getTasks () {
   return new Promise((resolve, reject) => {
     Rest.get('/api/task/').end((error, response) => {

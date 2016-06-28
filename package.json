@@ -6,6 +6,7 @@
     "babel-register": "^6.8.0",
     "body-parser": "^1.15.1",
     "compression": "^1.6.2",
+    "es6-promise": "^3.2.1",
     "express": "^4.13.4",
     "grommet": "https://github.com/grommet/grommet/tarball/stable",
     "morgan": "^1.7.0",

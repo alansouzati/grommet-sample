@@ -12,13 +12,20 @@ app.use(compression());
 app.use(morgan('tiny'));
 app.use(bodyParser.json());
 
-const tasks = [];
+let tasks = [];
 app.get('/api/task', (req, res) => {
   res.send(tasks);
 });
 
 app.post('/api/task', (req, res) => {
   tasks.push(req.body);
+  res.sendStatus(200);
+});
+
+app.delete('/api/task', (req, res) => {
+  tasks = tasks.filter((task) => {
+    return task.label === req.body.label && task.status === req.body.status
+  });
   res.sendStatus(200);
 });
 

@@ -1,3 +1,5 @@
+import es6Promise from 'es6-promise';
+es6Promise.polyfill();
 import '../scss/index.scss';
 
 import React from 'react';
