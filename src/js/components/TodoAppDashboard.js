@@ -7,10 +7,11 @@ import Tile from 'grommet/components/Tile';
 import Meter from 'grommet/components/Meter';
 import Table from 'grommet/components/Table';
 import Section from 'grommet/components/Section';
-import Status from 'grommet/components/icons/Status';
+import StatusIcon from 'grommet/components/icons/Status';
+import CloseIcon from 'grommet/components/icons/base/Close';
 
 import { browserHistory } from 'react-router';
-import { getTasks } from '../store';
+import { getTasks, deleteTask } from '../store';
 
 function getLabel(label, count, colorIndex) {
   return {
@@ -25,6 +26,7 @@ export default class TodoAppDashboard extends Component {
   constructor () {
     super();
     this._onRequestForAddTask = this._onRequestForAddTask.bind(this);
+    this._onRequestForDeleteTask = this._onRequestForDeleteTask.bind(this);
     this.state = {
       tasks: []
     };
@@ -37,6 +39,12 @@ export default class TodoAppDashboard extends Component {
   _onRequestForAddTask (event) {
     event.preventDefault();
     browserHistory.push('/add');
+  }
+
+  _onRequestForDeleteTask (index) {
+    let tasks = this.state.tasks;
+    tasks.splice(index, 1);
+    deleteTask(this.state.tasks[index]).then(() => this.setState({ tasks }));
   }
 
   render () {
@@ -52,8 +60,14 @@ export default class TodoAppDashboard extends Component {
 
       return (
         <tr key={index}>
-          <td><Status value={task.status} small={true} /></td>
+          <td width="10%" style={{'minWidth': '60px'}}>
+            <StatusIcon value={task.status} small={true} />
+          </td>
           <td>{task.label}</td>
+          <td width="10%" style={{'minWidth': '100px'}}>
+            <Button onClick={this._onRequestForDeleteTask.bind(this, index)}
+              icon={<CloseIcon />} />
+          </td>
         </tr>
       );
     });
