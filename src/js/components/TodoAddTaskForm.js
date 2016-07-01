@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, PropTypes } from 'react';
 
 import Box from 'grommet/components/Box';
 import Button from 'grommet/components/Button';
@@ -8,9 +8,11 @@ import FormField from 'grommet/components/FormField';
 import FormFields from 'grommet/components/FormFields';
 import Header from 'grommet/components/Header';
 import Heading from 'grommet/components/Heading';
+import Intl from 'grommet/utils/Intl';
 
 import { browserHistory } from 'react-router';
 import { addTask } from '../store';
+import { setDocumentTitle } from '../utils';
 
 export default class TodoAddTaskForm extends Component {
   constructor () {
@@ -25,6 +27,10 @@ export default class TodoAddTaskForm extends Component {
       label: undefined,
       status: undefined
     };
+  }
+
+  componentDidMount () {
+    setDocumentTitle(Intl.getMessage(this.context.intl, 'Add Task'));
   }
 
   _onCancel (event) {
@@ -87,3 +93,7 @@ export default class TodoAddTaskForm extends Component {
     );
   }
 }
+
+TodoAddTaskForm.contextTypes = {
+  intl: PropTypes.object.isRequired
+};
